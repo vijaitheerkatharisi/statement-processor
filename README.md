@@ -32,7 +32,7 @@ You may also package the application in the form of a jar and then run the jar f
 
 ```bash
 mvn clean package
-java -jar target/statement-processor-1.0.0-SNAPSHOT.jar
+java -jar target/statement-processor-1.0.0-RELEASE.jar
 ```
 
 ### Who do I talk to? ###
