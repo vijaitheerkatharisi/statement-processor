@@ -66,11 +66,11 @@ public class StatementController implements StatementAPI {
 				
 				serviceResponse.getTransactions().forEach(transaction -> {
 
-					Transaction responseStatements = new Transaction();
-					responseStatements.setReference(transaction.getReference());
-					responseStatements.setDescription(transaction.getDescription());
-					transactions.add(responseStatements);
-					LOG.debug(LogMessages.FAILURE_RESPONSE,responseStatements);
+					Transaction responseTransaction = new Transaction();
+					responseTransaction.setReference(transaction.getReference());
+					responseTransaction.setDescription(transaction.getDescription());
+					transactions.add(responseTransaction);
+					LOG.debug(LogMessages.FAILURE_RESPONSE,responseTransaction);
 				});
 			
 			}
@@ -98,11 +98,11 @@ public class StatementController implements StatementAPI {
 			if (serviceResponse.getTransactions() != null) {
 				serviceResponse.getTransactions().forEach(transaction -> {
 
-					Transaction responseStatements = new Transaction();
-					responseStatements.setReference(transaction.getReference());
-					responseStatements.setDescription(transaction.getDescription());
-					transactions.add(responseStatements);
-					LOG.debug(LogMessages.FAILURE_RESPONSE,responseStatements);
+					Transaction responseTransaction = new Transaction();
+					responseTransaction.setReference(transaction.getReference());
+					responseTransaction.setDescription(transaction.getDescription());
+					transactions.add(responseTransaction);
+					LOG.debug(LogMessages.FAILURE_RESPONSE,responseTransaction);
 				});
 			}
 			LOG.info("set statemts response");
@@ -118,6 +118,7 @@ public class StatementController implements StatementAPI {
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseEntity<StatementResponse> processCSV() {
+		
 		StatementResponse response = new StatementResponse();
 		StatmentServiceResponse serviceResponse;
 		try {
@@ -127,11 +128,11 @@ public class StatementController implements StatementAPI {
 			if (serviceResponse.getTransactions() != null) {
 				serviceResponse.getTransactions().forEach(transaction -> {
 					LOG.info("processing xml file");
-					Transaction responseStatements = new Transaction();
-					responseStatements.setReference(transaction.getReference());
-					responseStatements.setDescription(transaction.getDescription());
-					transactions.add(responseStatements);
-					LOG.debug(LogMessages.FAILURE_RESPONSE,responseStatements);
+					Transaction responseTransaction = new Transaction();
+					responseTransaction.setReference(transaction.getReference());
+					responseTransaction.setDescription(transaction.getDescription());
+					transactions.add(responseTransaction);
+					LOG.debug(LogMessages.FAILURE_RESPONSE,responseTransaction);
 				});
 			}
 			response.setTransaction(transactions);
