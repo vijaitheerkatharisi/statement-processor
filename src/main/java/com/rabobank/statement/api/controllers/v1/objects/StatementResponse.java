@@ -18,11 +18,13 @@ public class StatementResponse implements Response {
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	private List<Transaction> transaction = new ArrayList<>();
 
-	public List<Transaction> getStatement() {
+	
+
+	public List<Transaction> getTransaction() {
 		return transaction;
 	}
 
-	public void setStatement(List<Transaction> transaction) {
+	public void setTransaction(List<Transaction> transaction) {
 		this.transaction = transaction;
 	}
 

@@ -56,15 +56,15 @@ public class StatementControllerTest {
 		transaction.setEndBalance(-20.23);
 		transaction.setStartBalance(21.6);
 		transaction.setMutation(-41.83);
-		Transaction statement2 = new Transaction();
-		statement2.setReference(Long.valueOf("165102"));
-		statement2.setAccountNumber("NL91RABO0315273637");
-		statement2.setDescription("Tickets for Rik Theu");
-		statement2.setEndBalance(-20.23);
-		statement2.setStartBalance(21.6);
-		statement2.setMutation(-41.83);
+		Transaction transaction2 = new Transaction();
+		transaction2.setReference(Long.valueOf("165102"));
+		transaction2.setAccountNumber("NL91RABO0315273637");
+		transaction2.setDescription("Tickets for Rik Theu");
+		transaction2.setEndBalance(-20.23);
+		transaction2.setStartBalance(21.6);
+		transaction2.setMutation(-41.83);
 		transactions.add(transaction);
-		transactions.add(statement2);
+		transactions.add(transaction2);
 	}
 	
 	@Test

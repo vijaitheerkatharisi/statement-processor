@@ -64,18 +64,18 @@ public class StatementController implements StatementAPI {
 			
 			if (serviceResponse != null && serviceResponse.getTransactions() != null) {
 				
-				serviceResponse.getTransactions().forEach(statement -> {
+				serviceResponse.getTransactions().forEach(transaction -> {
 
 					Transaction responseStatements = new Transaction();
-					responseStatements.setReference(statement.getReference());
-					responseStatements.setDescription(statement.getDescription());
+					responseStatements.setReference(transaction.getReference());
+					responseStatements.setDescription(transaction.getDescription());
 					transactions.add(responseStatements);
 					LOG.debug(LogMessages.FAILURE_RESPONSE,responseStatements);
 				});
 			
 			}
 			LOG.info("set statemts in to response");
-			response.setStatement(transactions);
+			response.setTransaction(transactions);
 
 		} catch (Exception exception) {
 			LOG.error("excepton procession file", exception);
@@ -96,17 +96,17 @@ public class StatementController implements StatementAPI {
 			serviceResponse = statementService.processXMLStatement(resource.getFile());
 			List<Transaction> transactions = new ArrayList<>();
 			if (serviceResponse.getTransactions() != null) {
-				serviceResponse.getTransactions().forEach(statement -> {
+				serviceResponse.getTransactions().forEach(transaction -> {
 
 					Transaction responseStatements = new Transaction();
-					responseStatements.setReference(statement.getReference());
-					responseStatements.setDescription(statement.getDescription());
+					responseStatements.setReference(transaction.getReference());
+					responseStatements.setDescription(transaction.getDescription());
 					transactions.add(responseStatements);
 					LOG.debug(LogMessages.FAILURE_RESPONSE,responseStatements);
 				});
 			}
 			LOG.info("set statemts response");
-			response.setStatement(transactions);
+			response.setTransaction(transactions);
 
 		} catch (Exception exception) {
 			LOG.error("exception processin xml file", exception);
@@ -125,16 +125,16 @@ public class StatementController implements StatementAPI {
 			serviceResponse = statementService.processCSVStatement(resource.getFile());
 			List<Transaction> transactions = new ArrayList<>();
 			if (serviceResponse.getTransactions() != null) {
-				serviceResponse.getTransactions().forEach(statement -> {
+				serviceResponse.getTransactions().forEach(transaction -> {
 					LOG.info("processing xml file");
 					Transaction responseStatements = new Transaction();
-					responseStatements.setReference(statement.getReference());
-					responseStatements.setDescription(statement.getDescription());
+					responseStatements.setReference(transaction.getReference());
+					responseStatements.setDescription(transaction.getDescription());
 					transactions.add(responseStatements);
 					LOG.debug(LogMessages.FAILURE_RESPONSE,responseStatements);
 				});
 			}
-			response.setStatement(transactions);
+			response.setTransaction(transactions);
 
 		} catch (Exception exception) {
 			LOG.error("exception processin xml file", exception);
