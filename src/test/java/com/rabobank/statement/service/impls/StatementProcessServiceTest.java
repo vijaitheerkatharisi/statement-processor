@@ -88,7 +88,7 @@ public class StatementProcessServiceTest {
 		expected.setTransactions(transactions);
 		expected.setServiceResponse(ResponseCodeDescription.SUCCESS);
 		
-		when(this.mockParseContext.paresFile(any())).thenReturn(transactions);
+		when(this.mockParseContext.parseFile(any())).thenReturn(transactions);
 		
 		StatmentServiceResponse actual = classUnderTest.processCSVStatement(new ClassPathResource("records.csv").getFile());
 		assertThat(expected).isEqualToComparingFieldByFieldRecursively(actual);
@@ -100,7 +100,7 @@ public class StatementProcessServiceTest {
 		expected.setTransactions(new ArrayList<Transaction>());
 		expected.setServiceResponse(ResponseCodeDescription.NO_DATE_FOUND);
 		
-		when(this.mockParseContext.paresFile(any())).thenReturn(uniqueStatements);
+		when(this.mockParseContext.parseFile(any())).thenReturn(uniqueStatements);
 		
 		StatmentServiceResponse actual = classUnderTest.processCSVStatement(new ClassPathResource("records.csv").getFile());
 		assertThat(expected).isEqualToComparingFieldByFieldRecursively(actual);
@@ -112,7 +112,7 @@ public class StatementProcessServiceTest {
 		StatmentServiceResponse expected = new StatmentServiceResponse();
 		expected.setServiceResponse(ResponseCodeDescription.ERROR);
 		
-		when(this.mockParseContext.paresFile(any())).thenThrow(StatementParserException.class);
+		when(this.mockParseContext.parseFile(any())).thenThrow(StatementParserException.class);
 		
 		StatmentServiceResponse actual = classUnderTest.processCSVStatement(new ClassPathResource("records.csv").getFile());
 		assertThat(expected).isEqualToComparingFieldByFieldRecursively(actual);
@@ -125,7 +125,7 @@ public class StatementProcessServiceTest {
 		expected.setTransactions(transactions);
 		expected.setServiceResponse(ResponseCodeDescription.SUCCESS);
 		
-		when(this.mockParseContext.paresFile(any())).thenReturn(transactions);
+		when(this.mockParseContext.parseFile(any())).thenReturn(transactions);
 		
 		StatmentServiceResponse actual = classUnderTest.processXMLStatement(new ClassPathResource("records.xml").getFile());
 		assertThat(expected).isEqualToComparingFieldByFieldRecursively(actual);
@@ -138,7 +138,7 @@ public class StatementProcessServiceTest {
 		expected.setTransactions(new ArrayList<Transaction>());
 		expected.setServiceResponse(ResponseCodeDescription.NO_DATE_FOUND);
 		
-		when(this.mockParseContext.paresFile(any())).thenReturn(uniqueStatements);
+		when(this.mockParseContext.parseFile(any())).thenReturn(uniqueStatements);
 		
 		StatmentServiceResponse actual = classUnderTest.processXMLStatement(new ClassPathResource("records.xml").getFile());
 		assertThat(expected).isEqualToComparingFieldByFieldRecursively(actual);
@@ -150,7 +150,7 @@ public class StatementProcessServiceTest {
 		StatmentServiceResponse expected = new StatmentServiceResponse();
 		expected.setServiceResponse(ResponseCodeDescription.ERROR);
 		
-		when(this.mockParseContext.paresFile(any())).thenThrow(StatementParserException.class);
+		when(this.mockParseContext.parseFile(any())).thenThrow(StatementParserException.class);
 		
 		StatmentServiceResponse actual = classUnderTest.processXMLStatement(new ClassPathResource("records.xml").getFile());
 		assertThat(expected).isEqualToComparingFieldByFieldRecursively(actual);

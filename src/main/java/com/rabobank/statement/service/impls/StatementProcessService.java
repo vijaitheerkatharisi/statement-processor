@@ -46,7 +46,7 @@ public class StatementProcessService implements StatementService {
 			parseContext.setParser(csvStatementParser);
 
 			LOG.info("parsing file");
-			transactions = collectFailureRecords(parseContext.paresFile(file));
+			transactions = collectFailureRecords(parseContext.parseFile(file));
 			LOG.info("reterieved statementsfile");
 
 			statmentServiceResponse.setTransactions(transactions);
@@ -70,7 +70,7 @@ public class StatementProcessService implements StatementService {
 			parseContext.setParser(xmlStatementParser);
 
 			LOG.info("parsing file");
-			transactions = collectFailureRecords(parseContext.paresFile(file));
+			transactions = collectFailureRecords(parseContext.parseFile(file));
 
 			LOG.debug("reterieved statementsfile-> {}", transactions);
 			statmentServiceResponse.setTransactions(transactions);
@@ -88,11 +88,16 @@ public class StatementProcessService implements StatementService {
 
 	private List<Transaction> collectFailureRecords(List<Transaction> transactions) {
 		List<Transaction> failureRecords = validateMutation(transactions);
-		failureRecords.addAll(validateReference(transactions));
+		failureRecords.addAll(filterDuplicateReference(transactions));
 		return failureRecords;
 	}
 
-	private List<Transaction> validateReference(List<Transaction> transactions) {
+	/**
+	 *  Filters the duplicate transaction reference number
+	 * @param transactions
+	 * @return
+	 */
+	private List<Transaction> filterDuplicateReference(List<Transaction> transactions) {
 		List<Transaction> duplicate = transactions.stream()
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream() // perform group by count
 				.filter(e -> e.getValue() > 1L).map(Entry<Transaction, Long>::getKey).collect(Collectors.toList());// using take only those element whose count is greater than 1 and using map take only value
@@ -107,6 +112,11 @@ public class StatementProcessService implements StatementService {
 	
 	}
 
+	/**
+	 * Filters the transaction with mutation failure records
+	 * @param transactions
+	 * @return
+	 */
 	private List<Transaction> validateMutation(List<Transaction> transactions) {
 		return transactions.stream().filter(transaction -> !isValid(transaction)).collect(Collectors.toList());
 	}

@@ -8,7 +8,11 @@ import org.springframework.stereotype.Component;
 import com.rabobank.statement.parser.StatementParser;
 import com.rabobank.statement.parser.exception.StatementParserException;
 import com.rabobank.statement.parser.objects.Transaction;
-
+/**
+ *  Parsing strategy (Strategy Pattern)
+ * @author vijai
+ *
+ */
 @Component
 public class ParseContext {
 
@@ -18,7 +22,7 @@ public class ParseContext {
 		this.parser = parser;
 	}
 
-	public List<Transaction> paresFile(File file) throws StatementParserException {
+	public List<Transaction> parseFile(File file) throws StatementParserException {
 		return parser.parse(file);
 	}
 

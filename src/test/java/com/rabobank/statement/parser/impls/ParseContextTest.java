@@ -54,7 +54,7 @@ public class ParseContextTest {
 	public void testForSuccess() throws Exception {
 		
 		when(this.parser.parse(any())).thenReturn(transactions);
-		List<Transaction> actual=classUnderTest.paresFile(new ClassPathResource("records.csv").getFile());
+		List<Transaction> actual=classUnderTest.parseFile(new ClassPathResource("records.csv").getFile());
 		assertEquals(transactions,actual);
 	}
 	@Test(expected=StatementParserException.class)
@@ -62,7 +62,7 @@ public class ParseContextTest {
 		
 		when(this.parser.parse(any())).thenThrow(StatementParserException.class);
 		
-		List<Transaction> actual=classUnderTest.paresFile(new ClassPathResource("records.csv").getFile());
+		List<Transaction> actual=classUnderTest.parseFile(new ClassPathResource("records.csv").getFile());
 		assertEquals(transactions,actual);
 	}
 
