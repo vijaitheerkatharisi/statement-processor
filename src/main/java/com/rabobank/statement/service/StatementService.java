@@ -2,12 +2,12 @@ package com.rabobank.statement.service;
 
 import java.io.File;
 
-import com.rabobank.statement.service.objects.StatementServiceResponse;
-
+import com.rabobank.statement.service.objects.StatmentServiceResponse;
 
 public interface StatementService {
-	
-	public StatementServiceResponse processCSVStatement(File file);
-	public StatementServiceResponse processXMLStatement(File file);
+
+	public StatmentServiceResponse processCSVStatement(File file);
+
+	public StatmentServiceResponse processXMLStatement(File file);
 
 }

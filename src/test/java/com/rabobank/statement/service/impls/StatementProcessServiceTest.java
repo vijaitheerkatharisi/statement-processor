@@ -20,9 +20,9 @@ import com.rabobank.statement.parser.exception.StatementParserException;
 import com.rabobank.statement.parser.impls.CSVStatementParser;
 import com.rabobank.statement.parser.impls.ParseContext;
 import com.rabobank.statement.parser.impls.XMLStatementParser;
-import com.rabobank.statement.parser.objects.Statement;
+import com.rabobank.statement.parser.objects.Transaction;
 import com.rabobank.statement.service.impls.StatementProcessService;
-import com.rabobank.statement.service.objects.StatementServiceResponse;
+import com.rabobank.statement.service.objects.StatmentServiceResponse;
 @RunWith(MockitoJUnitRunner.class)
 public class StatementProcessServiceTest {
 
@@ -38,19 +38,19 @@ public class StatementProcessServiceTest {
 	@Mock
 	XMLStatementParser mockXMLStatementParser;
 	
-	List<Statement> statements =new ArrayList<>();
-	List<Statement> uniqueStatements =new ArrayList<>();
+	List<Transaction> transactions =new ArrayList<>();
+	List<Transaction> uniqueStatements =new ArrayList<>();
 	
 	@Before
 	public void setUp() throws Exception{
-		Statement statement=new Statement();
-		statement.setReference(Long.valueOf("194261"));
-		statement.setAccountNumber("NL91RABO0315273637");
-		statement.setDescription("description");
-		statement.setEndBalance(-20.23);
-		statement.setStartBalance(21.6);
-		statement.setMutation(-41.83);
-		Statement statement2=new Statement();
+		Transaction transaction=new Transaction();
+		transaction.setReference(Long.valueOf("194261"));
+		transaction.setAccountNumber("NL91RABO0315273637");
+		transaction.setDescription("description");
+		transaction.setEndBalance(-20.23);
+		transaction.setStartBalance(21.6);
+		transaction.setMutation(-41.83);
+		Transaction statement2=new Transaction();
 		statement2.setReference(Long.valueOf("194261"));
 		statement2.setAccountNumber("NL91RABO0315273637");
 		statement2.setDescription("description");
@@ -59,17 +59,17 @@ public class StatementProcessServiceTest {
 		statement2.setMutation(-41.83);
 
 		
-		statements.add(statement);
-		statements.add(statement2);
+		transactions.add(transaction);
+		transactions.add(statement2);
 		
-		Statement statement3=new Statement();
+		Transaction statement3=new Transaction();
 		statement3.setReference(Long.valueOf("194261"));
 		statement3.setAccountNumber("NL91RABO0315273637");
 		statement3.setDescription("description");
 		statement3.setEndBalance(-20.23);
 		statement3.setStartBalance(21.6);
 		statement3.setMutation(-41.83);
-		Statement statement4=new Statement();
+		Transaction statement4=new Transaction();
 		statement4.setReference(Long.valueOf("194263"));
 		statement4.setAccountNumber("NL91RABO0315273637");
 		statement4.setDescription("description");
@@ -84,75 +84,75 @@ public class StatementProcessServiceTest {
 	@Test
 	public void testProcessCSVStatementForSuccess() throws Exception {
 		
-		StatementServiceResponse expected = new StatementServiceResponse();
-		expected.setStatements(statements);
+		StatmentServiceResponse expected = new StatmentServiceResponse();
+		expected.setTransactions(transactions);
 		expected.setServiceResponse(ResponseCodeDescription.SUCCESS);
 		
-		when(this.mockParseContext.paresFile(any())).thenReturn(statements);
+		when(this.mockParseContext.paresFile(any())).thenReturn(transactions);
 		
-		StatementServiceResponse actual = classUnderTest.processCSVStatement(new ClassPathResource("records.csv").getFile());
+		StatmentServiceResponse actual = classUnderTest.processCSVStatement(new ClassPathResource("records.csv").getFile());
 		assertThat(expected).isEqualToComparingFieldByFieldRecursively(actual);
 	}
 	@Test
 	public void testProcessCSVStatementForNoData() throws Exception {
 		
-		StatementServiceResponse expected = new StatementServiceResponse();
-		expected.setStatements(new ArrayList<Statement>());
+		StatmentServiceResponse expected = new StatmentServiceResponse();
+		expected.setTransactions(new ArrayList<Transaction>());
 		expected.setServiceResponse(ResponseCodeDescription.NO_DATE_FOUND);
 		
 		when(this.mockParseContext.paresFile(any())).thenReturn(uniqueStatements);
 		
-		StatementServiceResponse actual = classUnderTest.processCSVStatement(new ClassPathResource("records.csv").getFile());
+		StatmentServiceResponse actual = classUnderTest.processCSVStatement(new ClassPathResource("records.csv").getFile());
 		assertThat(expected).isEqualToComparingFieldByFieldRecursively(actual);
 	}
 	
 	@Test
 	public void testProcessCSVStatementForError() throws Exception {
 		
-		StatementServiceResponse expected = new StatementServiceResponse();
+		StatmentServiceResponse expected = new StatmentServiceResponse();
 		expected.setServiceResponse(ResponseCodeDescription.ERROR);
 		
 		when(this.mockParseContext.paresFile(any())).thenThrow(StatementParserException.class);
 		
-		StatementServiceResponse actual = classUnderTest.processCSVStatement(new ClassPathResource("records.csv").getFile());
+		StatmentServiceResponse actual = classUnderTest.processCSVStatement(new ClassPathResource("records.csv").getFile());
 		assertThat(expected).isEqualToComparingFieldByFieldRecursively(actual);
 	}
 	
 	@Test
 	public void testProcessXMLStatementForSuccess() throws Exception {
 		
-		StatementServiceResponse expected = new StatementServiceResponse();
-		expected.setStatements(statements);
+		StatmentServiceResponse expected = new StatmentServiceResponse();
+		expected.setTransactions(transactions);
 		expected.setServiceResponse(ResponseCodeDescription.SUCCESS);
 		
-		when(this.mockParseContext.paresFile(any())).thenReturn(statements);
+		when(this.mockParseContext.paresFile(any())).thenReturn(transactions);
 		
-		StatementServiceResponse actual = classUnderTest.processXMLStatement(new ClassPathResource("records.xml").getFile());
+		StatmentServiceResponse actual = classUnderTest.processXMLStatement(new ClassPathResource("records.xml").getFile());
 		assertThat(expected).isEqualToComparingFieldByFieldRecursively(actual);
 	}
 	
 	@Test
 	public void testProcessXMLStatementForSuccessNoDataFound() throws Exception {
 		
-		StatementServiceResponse expected = new StatementServiceResponse();
-		expected.setStatements(new ArrayList<Statement>());
+		StatmentServiceResponse expected = new StatmentServiceResponse();
+		expected.setTransactions(new ArrayList<Transaction>());
 		expected.setServiceResponse(ResponseCodeDescription.NO_DATE_FOUND);
 		
 		when(this.mockParseContext.paresFile(any())).thenReturn(uniqueStatements);
 		
-		StatementServiceResponse actual = classUnderTest.processXMLStatement(new ClassPathResource("records.xml").getFile());
+		StatmentServiceResponse actual = classUnderTest.processXMLStatement(new ClassPathResource("records.xml").getFile());
 		assertThat(expected).isEqualToComparingFieldByFieldRecursively(actual);
 	}
 	
 	@Test
 	public void testProcessXMLStatementForError() throws Exception {
 		
-		StatementServiceResponse expected = new StatementServiceResponse();
+		StatmentServiceResponse expected = new StatmentServiceResponse();
 		expected.setServiceResponse(ResponseCodeDescription.ERROR);
 		
 		when(this.mockParseContext.paresFile(any())).thenThrow(StatementParserException.class);
 		
-		StatementServiceResponse actual = classUnderTest.processXMLStatement(new ClassPathResource("records.xml").getFile());
+		StatmentServiceResponse actual = classUnderTest.processXMLStatement(new ClassPathResource("records.xml").getFile());
 		assertThat(expected).isEqualToComparingFieldByFieldRecursively(actual);
 	}
 

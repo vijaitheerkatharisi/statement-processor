@@ -12,18 +12,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlRootElement(name = "records")
-public class XMLStatements implements Statements {
-	
-	
-	List<Statement> statements;
+public class XMLTransactions implements Transactions {
+
+	List<Transaction> transactions;
 
 	@XmlElement(name = "record")
-	public List<Statement> getStatements() {
-		return statements;
+	public List<Transaction> getStatements() {
+		return transactions;
 	}
 
-	public void setStatements(List<Statement> statements) {
-		this.statements = statements;
+	public void setStatements(List<Transaction> transactions) {
+		this.transactions = transactions;
 	}
-	
+
 }

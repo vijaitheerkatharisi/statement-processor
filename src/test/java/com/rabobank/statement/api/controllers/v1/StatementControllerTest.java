@@ -26,10 +26,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabobank.statement.api.controllers.v1.objects.StatementResponse;
 import com.rabobank.statement.constants.ResponseCodeDescription;
-import com.rabobank.statement.parser.objects.Statement;
+import com.rabobank.statement.parser.objects.Transaction;
 import com.rabobank.statement.service.StatementService;
 import com.rabobank.statement.service.impls.FileStorageService;
-import com.rabobank.statement.service.objects.StatementServiceResponse;
+import com.rabobank.statement.service.objects.StatmentServiceResponse;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = StatementController.class, secure = false)
@@ -44,34 +44,34 @@ public class StatementControllerTest {
 	@MockBean
 	FileStorageService fileStorageService;
 
-	List<Statement> statements = new ArrayList<>();
+	List<Transaction> transactions = new ArrayList<>();
 
 	
 	@Before
 	public void setUp() throws Exception {
-		Statement statement = new Statement();
-		statement.setReference(Long.valueOf("165102"));
-		statement.setAccountNumber("NL91RABO0315273637");
-		statement.setDescription("Tickets from Erik de Vries");
-		statement.setEndBalance(-20.23);
-		statement.setStartBalance(21.6);
-		statement.setMutation(-41.83);
-		Statement statement2 = new Statement();
+		Transaction transaction = new Transaction();
+		transaction.setReference(Long.valueOf("165102"));
+		transaction.setAccountNumber("NL91RABO0315273637");
+		transaction.setDescription("Tickets from Erik de Vries");
+		transaction.setEndBalance(-20.23);
+		transaction.setStartBalance(21.6);
+		transaction.setMutation(-41.83);
+		Transaction statement2 = new Transaction();
 		statement2.setReference(Long.valueOf("165102"));
 		statement2.setAccountNumber("NL91RABO0315273637");
 		statement2.setDescription("Tickets for Rik Theu");
 		statement2.setEndBalance(-20.23);
 		statement2.setStartBalance(21.6);
 		statement2.setMutation(-41.83);
-		statements.add(statement);
-		statements.add(statement2);
+		transactions.add(transaction);
+		transactions.add(statement2);
 	}
 	
 	@Test
 	public void testProcessForCSVFileSuccess() throws Exception {
 
-		StatementServiceResponse response = new StatementServiceResponse();
-		response.setStatements(statements);
+		StatmentServiceResponse response = new StatmentServiceResponse();
+		response.setTransactions(transactions);
 		response.setServiceResponse(ResponseCodeDescription.SUCCESS);
 		MockMultipartFile multipartFile  = new MockMultipartFile("file", "records.csv",
                 "multipart/form-data", "Spring Framework".getBytes());
@@ -96,8 +96,8 @@ public class StatementControllerTest {
 	@Test
 	public void testProcessForXMLFileSuccess() throws Exception {
 
-		StatementServiceResponse response = new StatementServiceResponse();
-		response.setStatements(statements);
+		StatmentServiceResponse response = new StatmentServiceResponse();
+		response.setTransactions(transactions);
 		response.setServiceResponse(ResponseCodeDescription.SUCCESS);
 		MockMultipartFile multipartFile  = new MockMultipartFile("file", "records.xml",
                 "multipart/form-data", "Statements process".getBytes());
@@ -160,8 +160,8 @@ public class StatementControllerTest {
 	@Test
 	public void testProcessCSVForSuccess() throws Exception {
 
-		StatementServiceResponse response = new StatementServiceResponse();
-		response.setStatements(statements);
+		StatmentServiceResponse response = new StatmentServiceResponse();
+		response.setTransactions(transactions);
 		response.setServiceResponse(ResponseCodeDescription.SUCCESS);
 
 		when(this.statementService.processCSVStatement(any())).thenReturn(response);
@@ -180,7 +180,7 @@ public class StatementControllerTest {
 	@Test
 	public void testProcessCSVForError() throws Exception {
 
-		StatementServiceResponse response = new StatementServiceResponse();
+		StatmentServiceResponse response = new StatmentServiceResponse();
 		response.setServiceResponse(ResponseCodeDescription.ERROR);
 
 		when(this.statementService.processCSVStatement(any())).thenReturn(response);
@@ -199,9 +199,9 @@ public class StatementControllerTest {
 	@Test
 	public void testProcessCSVForNoDataFound() throws Exception {
 
-		StatementServiceResponse response = new StatementServiceResponse();
+		StatmentServiceResponse response = new StatmentServiceResponse();
 		response.setServiceResponse(ResponseCodeDescription.NO_DATE_FOUND);
-		response.setStatements(new ArrayList<>());
+		response.setTransactions(new ArrayList<>());
 		when(this.statementService.processCSVStatement(any())).thenReturn(response);
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -236,8 +236,8 @@ public class StatementControllerTest {
 	@Test
 	public void testProcessXMLForSuccess() throws Exception {
 
-		StatementServiceResponse response = new StatementServiceResponse();
-		response.setStatements(statements);
+		StatmentServiceResponse response = new StatmentServiceResponse();
+		response.setTransactions(transactions);
 		response.setServiceResponse(ResponseCodeDescription.SUCCESS);
 
 		when(this.statementService.processXMLStatement(any())).thenReturn(response);
@@ -256,7 +256,7 @@ public class StatementControllerTest {
 	@Test
 	public void testProcessXMLError() throws Exception {
 
-		StatementServiceResponse response = new StatementServiceResponse();
+		StatmentServiceResponse response = new StatmentServiceResponse();
 		response.setServiceResponse(ResponseCodeDescription.ERROR);
 
 		when(this.statementService.processXMLStatement(any())).thenReturn(response);
@@ -275,9 +275,9 @@ public class StatementControllerTest {
 	@Test
 	public void testProcessXMLForNoDataFound() throws Exception {
 
-		StatementServiceResponse response = new StatementServiceResponse();
+		StatmentServiceResponse response = new StatmentServiceResponse();
 		response.setServiceResponse(ResponseCodeDescription.NO_DATE_FOUND);
-		response.setStatements(new ArrayList<>());
+		response.setTransactions(new ArrayList<>());
 		when(this.statementService.processXMLStatement(any())).thenReturn(response);
 
 		ObjectMapper mapper = new ObjectMapper();

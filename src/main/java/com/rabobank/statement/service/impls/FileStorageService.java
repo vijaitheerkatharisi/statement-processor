@@ -21,49 +21,49 @@ import com.rabobank.statement.service.exception.FileStorageException;
 @Service
 public class FileStorageService {
 
-    private final Path fileStorageLocation;
+	private final Path fileStorageLocation;
 
-    FileStorageProperties fileStorageProperties;
-    
-    @Autowired
-    public FileStorageService(FileStorageProperties fileStorageProperties) throws FileStorageException {
-        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
-                .toAbsolutePath().normalize();
-        try {
-            Files.createDirectories(this.fileStorageLocation);
-        } catch (Exception ex) {
-            throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
-        }
-    }
+	FileStorageProperties fileStorageProperties;
 
-    public String storeFile(MultipartFile file) throws FileStorageException {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+	@Autowired
+	public FileStorageService(FileStorageProperties fileStorageProperties) throws FileStorageException {
+		this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath().normalize();
+		try {
+			Files.createDirectories(this.fileStorageLocation);
+		} catch (Exception ex) {
+			throw new FileStorageException("Could not create the directory where the uploaded files will be stored.",
+					ex);
+		}
+	}
 
-        try {
-            if(fileName.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
-            }
+	public String storeFile(MultipartFile file) throws FileStorageException {
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-            Path targetLocation = this.fileStorageLocation.resolve(fileName);
-            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+		try {
+			if (fileName.contains("..")) {
+				throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+			}
 
-            return fileName;
-        } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
-        }
-    }
+			Path targetLocation = this.fileStorageLocation.resolve(fileName);
+			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-    public Resource loadFileAsResource(String fileName) throws FileNotFoundException {
-        try {
-            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
-            Resource resource = new UrlResource(filePath.toUri());
-            if(resource.exists()) {
-                return resource;
-            } else {
-                throw new FileNotFoundException();
-            }
-        } catch (MalformedURLException ex) {
-            throw new FileNotFoundException();
-        }
-    }
+			return fileName;
+		} catch (IOException ex) {
+			throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+		}
+	}
+
+	public Resource loadFileAsResource(String fileName) throws FileNotFoundException {
+		try {
+			Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+			Resource resource = new UrlResource(filePath.toUri());
+			if (resource.exists()) {
+				return resource;
+			} else {
+				throw new FileNotFoundException();
+			}
+		} catch (MalformedURLException ex) {
+			throw new FileNotFoundException();
+		}
+	}
 }

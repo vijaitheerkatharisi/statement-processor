@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "record")
-public class Statement {
+public class Transaction {
 	private Long reference;
 	private String accountNumber;
 	private String description;
@@ -13,10 +13,10 @@ public class Statement {
 	private Double mutation;
 	private Double endBalance;
 
-	public Statement() {
+	public Transaction() {
 	}
 
-	public Statement(Long reference, String accountNumber, String description, Double startBalance, Double mutation,
+	public Transaction(Long reference, String accountNumber, String description, Double startBalance, Double mutation,
 			Double endBalance) {
 		super();
 		this.reference = reference;
@@ -103,7 +103,7 @@ public class Statement {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Statement other = (Statement) obj;
+		Transaction other = (Transaction) obj;
 		if (reference == null) {
 			if (other.reference != null)
 				return false;
@@ -111,7 +111,5 @@ public class Statement {
 			return false;
 		return true;
 	}
-
-	
 
 }

@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import com.rabobank.statement.parser.exception.StatementParserException;
-import com.rabobank.statement.parser.objects.Statement;
+import com.rabobank.statement.parser.objects.Transaction;
 
 /**
  * Statement parser interface which need to be implemented by file parser
@@ -14,7 +14,6 @@ import com.rabobank.statement.parser.objects.Statement;
  */
 public interface StatementParser {
 
-	public List<Statement> parse(File file) throws StatementParserException;
+	public List<Transaction> parse(File file) throws StatementParserException;
 
 }
-	

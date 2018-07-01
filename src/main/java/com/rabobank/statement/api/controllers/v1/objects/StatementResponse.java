@@ -16,14 +16,14 @@ public class StatementResponse implements Response {
 
 	@JsonProperty(value = "failure_records")
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	private List<Statement> statement = new ArrayList<>();
+	private List<Transaction> transaction = new ArrayList<>();
 
-	public List<Statement> getStatement() {
-		return statement;
+	public List<Transaction> getStatement() {
+		return transaction;
 	}
 
-	public void setStatement(List<Statement> statement) {
-		this.statement = statement;
+	public void setStatement(List<Transaction> transaction) {
+		this.transaction = transaction;
 	}
 
 	@Override

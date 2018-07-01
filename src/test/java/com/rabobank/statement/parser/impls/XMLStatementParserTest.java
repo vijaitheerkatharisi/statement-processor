@@ -13,25 +13,25 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.io.ClassPathResource;
 
 import com.rabobank.statement.parser.exception.StatementParserException;
-import com.rabobank.statement.parser.objects.Statement;
+import com.rabobank.statement.parser.objects.Transaction;
 @RunWith(MockitoJUnitRunner.class)
 public class XMLStatementParserTest {
 
 	@InjectMocks
 	private XMLStatementParser classUnderTest;
 	
-	private List<Statement> expected =new ArrayList<>();
+	private List<Transaction> expected =new ArrayList<>();
 	
 	@Before
 	public void setUp() throws Exception{
-		Statement statement=new Statement();
-		statement.setReference(Long.valueOf("130498"));
-		statement.setAccountNumber("NL69ABNA0433647324");
-		statement.setDescription("Tickets for Peter Theuß");
-		statement.setEndBalance(8.12);
-		statement.setStartBalance(26.9);
-		statement.setMutation(-18.78);
-		Statement statement2=new Statement();
+		Transaction transaction=new Transaction();
+		transaction.setReference(Long.valueOf("130498"));
+		transaction.setAccountNumber("NL69ABNA0433647324");
+		transaction.setDescription("Tickets for Peter Theuß");
+		transaction.setEndBalance(8.12);
+		transaction.setStartBalance(26.9);
+		transaction.setMutation(-18.78);
+		Transaction statement2=new Transaction();
 		statement2.setReference(Long.valueOf("167875"));
 		statement2.setAccountNumber("NL93ABNA0585619023");
 		statement2.setDescription("Tickets from Erik de Vries");
@@ -40,12 +40,12 @@ public class XMLStatementParserTest {
 		statement2.setMutation(939.00);
 
 		
-		expected.add(statement);
+		expected.add(transaction);
 		expected.add(statement2);
 	}
 	@Test
 	public void testParseWithReocrds() throws Exception {
-		List<Statement> actual=classUnderTest.parse(new ClassPathResource("records.xml").getFile());
+		List<Transaction> actual=classUnderTest.parse(new ClassPathResource("records.xml").getFile());
 		assertEquals(expected,actual);
 	
 	}

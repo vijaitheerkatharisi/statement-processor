@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.io.Files;
-import com.rabobank.statement.api.controllers.v1.objects.Statement;
+import com.rabobank.statement.api.controllers.v1.objects.Transaction;
 import com.rabobank.statement.api.controllers.v1.objects.StatementResponse;
 import com.rabobank.statement.api.v1.StatementAPI;
 import com.rabobank.statement.constants.LogMessages;
 import com.rabobank.statement.constants.ResponseCodeDescription;
 import com.rabobank.statement.service.StatementService;
 import com.rabobank.statement.service.impls.FileStorageService;
-import com.rabobank.statement.service.objects.StatementServiceResponse;
+import com.rabobank.statement.service.objects.StatmentServiceResponse;
 import com.rabobank.statement.util.ResponseUtil;
 
 @RestController
@@ -42,7 +42,7 @@ public class StatementController implements StatementAPI {
 
 		StatementResponse response = new StatementResponse();
 		Resource resource;
-		StatementServiceResponse serviceResponse;
+		StatmentServiceResponse serviceResponse;
 		try {
 
 			String fileName = fileStorageService.storeFile(file);
@@ -60,28 +60,28 @@ public class StatementController implements StatementAPI {
 				LOG.error("invalid file format");
 				return (ResponseEntity<StatementResponse>) ResponseUtil.preperEntityForBadRequest(ResponseCodeDescription.VALIDATION_ERROR, response);
 			}
-			List<Statement> statements = new ArrayList<>();
+			List<Transaction> transactions = new ArrayList<>();
 			
-			if (serviceResponse != null && serviceResponse.getStatements() != null) {
+			if (serviceResponse != null && serviceResponse.getTransactions() != null) {
 				
-				serviceResponse.getStatements().forEach(statement -> {
+				serviceResponse.getTransactions().forEach(statement -> {
 
-					Statement responseStatements = new Statement();
+					Transaction responseStatements = new Transaction();
 					responseStatements.setReference(statement.getReference());
 					responseStatements.setDescription(statement.getDescription());
-					statements.add(responseStatements);
+					transactions.add(responseStatements);
 					LOG.debug(LogMessages.FAILURE_RESPONSE,responseStatements);
 				});
 			
 			}
 			LOG.info("set statemts in to response");
-			response.setStatement(statements);
+			response.setStatement(transactions);
 
 		} catch (Exception exception) {
 			LOG.error("excepton procession file", exception);
 			return (ResponseEntity<StatementResponse>) ResponseUtil.preperEntityForException(ResponseCodeDescription.INTERNAL_SERVER_ERROR, response);
 		}
-		return (ResponseEntity<StatementResponse>) ResponseUtil.preperEntityForOk(serviceResponse.getServiceResponse(),response);
+		return (ResponseEntity<StatementResponse>) ResponseUtil.preperEntityForOk(serviceResponse,response);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -89,59 +89,58 @@ public class StatementController implements StatementAPI {
 	public ResponseEntity<StatementResponse> processXML() {
 
 		StatementResponse response = new StatementResponse();
-		StatementServiceResponse serviceResponse;
+		StatmentServiceResponse serviceResponse;
 		try {
 			Resource resource = new ClassPathResource("records.xml");
 			LOG.info("processing xml file");
 			serviceResponse = statementService.processXMLStatement(resource.getFile());
-			List<Statement> statements = new ArrayList<>();
-			if (serviceResponse.getStatements() != null) {
-				serviceResponse.getStatements().forEach(statement -> {
+			List<Transaction> transactions = new ArrayList<>();
+			if (serviceResponse.getTransactions() != null) {
+				serviceResponse.getTransactions().forEach(statement -> {
 
-					Statement responseStatements = new Statement();
+					Transaction responseStatements = new Transaction();
 					responseStatements.setReference(statement.getReference());
 					responseStatements.setDescription(statement.getDescription());
-					statements.add(responseStatements);
+					transactions.add(responseStatements);
 					LOG.debug(LogMessages.FAILURE_RESPONSE,responseStatements);
 				});
 			}
 			LOG.info("set statemts response");
-			response.setStatement(statements);
+			response.setStatement(transactions);
 
 		} catch (Exception exception) {
 			LOG.error("exception processin xml file", exception);
 			return (ResponseEntity<StatementResponse>) ResponseUtil.preperEntityForException(ResponseCodeDescription.INTERNAL_SERVER_ERROR, response);
 		}
-		return (ResponseEntity<StatementResponse>) ResponseUtil.preperEntityForOk(serviceResponse.getServiceResponse(),response);
+		return (ResponseEntity<StatementResponse>) ResponseUtil.preperEntityForOk(serviceResponse,response);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseEntity<StatementResponse> processCSV() {
 		StatementResponse response = new StatementResponse();
-		StatementServiceResponse serviceResponse;
+		StatmentServiceResponse serviceResponse;
 		try {
 			Resource resource = new ClassPathResource("records.csv");
 			serviceResponse = statementService.processCSVStatement(resource.getFile());
-			List<Statement> statements = new ArrayList<>();
-			if (serviceResponse.getStatements() != null) {
-				serviceResponse.getStatements().forEach(statement -> {
+			List<Transaction> transactions = new ArrayList<>();
+			if (serviceResponse.getTransactions() != null) {
+				serviceResponse.getTransactions().forEach(statement -> {
 					LOG.info("processing xml file");
-					Statement responseStatements = new Statement();
+					Transaction responseStatements = new Transaction();
 					responseStatements.setReference(statement.getReference());
 					responseStatements.setDescription(statement.getDescription());
-					statements.add(responseStatements);
+					transactions.add(responseStatements);
 					LOG.debug(LogMessages.FAILURE_RESPONSE,responseStatements);
 				});
 			}
-			response.setStatement(statements);
+			response.setStatement(transactions);
 
 		} catch (Exception exception) {
 			LOG.error("exception processin xml file", exception);
 			return (ResponseEntity<StatementResponse>) ResponseUtil.preperEntityForException(ResponseCodeDescription.INTERNAL_SERVER_ERROR, response);
 		}
-		return (ResponseEntity<StatementResponse>) ResponseUtil.preperEntityForOk(serviceResponse.getServiceResponse(),
-				response);
+		return (ResponseEntity<StatementResponse>) ResponseUtil.preperEntityForOk(serviceResponse,response);
 	}
 
 }

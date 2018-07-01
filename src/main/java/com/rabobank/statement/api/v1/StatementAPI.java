@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rabobank.statement.api.controllers.v1.objects.StatementResponse;
+import com.rabobank.statement.constants.Documentation;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,14 +20,13 @@ import io.swagger.annotations.ApiResponses;
 public interface StatementAPI {
 
 	@PostMapping(value = "process", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(consumes = MediaType.APPLICATION_JSON_VALUE, produces = "application/json", value = "Statement File Processor", response = StatementResponse.class)
+	@ApiOperation(notes=Documentation.STATMENT_PROCESS_CSV_AND_XML_NOTES,consumes = MediaType.APPLICATION_JSON_VALUE, produces = "application/json", value = "Statement File Processor", response = StatementResponse.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Operation Successful "),
 			@ApiResponse(code = 401, message = "You are not authorized to view the resource"),
 			@ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
 			@ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
 	public ResponseEntity<StatementResponse> process(MultipartFile uploadfile);
-	
-	
+
 	@GetMapping(value = "process/xml", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, value = "XML Statement File Processor", response = StatementResponse.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Operation Successful "),

@@ -10,30 +10,30 @@ import org.springframework.stereotype.Component;
 
 import com.rabobank.statement.parser.StatementParser;
 import com.rabobank.statement.parser.exception.StatementParserException;
-import com.rabobank.statement.parser.objects.Statement;
-import com.rabobank.statement.parser.objects.Statements;
-import com.rabobank.statement.parser.objects.XMLStatements;
+import com.rabobank.statement.parser.objects.Transaction;
+import com.rabobank.statement.parser.objects.Transactions;
+import com.rabobank.statement.parser.objects.XMLTransactions;
 
 /**
  * 
  * @author vijai
  *
  */
-@Component(value="xmlStatementParser")
+@Component(value = "xmlStatementParser")
 public class XMLStatementParser implements StatementParser {
 
 	@Override
-	public List<Statement> parse(File file) throws StatementParserException {
-		Statements statements;
+	public List<Transaction> parse(File file) throws StatementParserException {
+		Transactions transactions;
 		JAXBContext jaxbContext;
 		try {
-			jaxbContext = JAXBContext.newInstance(XMLStatements.class);
+			jaxbContext = JAXBContext.newInstance(XMLTransactions.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			statements = (XMLStatements) unmarshaller.unmarshal(file);
+			transactions = (XMLTransactions) unmarshaller.unmarshal(file);
 		} catch (Exception exception) {
 			throw new StatementParserException(exception);
 		}
-		return statements.getStatements();
+		return transactions.getStatements();
 	}
 
 }

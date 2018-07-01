@@ -1,6 +1,6 @@
 package com.rabobank.statement.api.controllers.v1.objects;
 
-public class Statement {
+public class Transaction {
 
 	private Long reference;
 	private String description;
@@ -23,8 +23,9 @@ public class Statement {
 
 	@Override
 	public String toString() {
-		return "Statement [reference=" + reference + ", description=" + description + "]";
+		return "Transaction [reference=" + reference + ", description=" + description + "]";
 	}
 
 	
+
 }

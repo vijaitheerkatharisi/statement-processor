@@ -3,23 +3,28 @@ package com.rabobank.statement.service.objects;
 import java.util.List;
 
 import com.rabobank.statement.constants.ResponseCode;
-import com.rabobank.statement.parser.objects.Statement;
+import com.rabobank.statement.parser.objects.Transaction;
 
-public class StatementServiceResponse {
-	
+public class StatmentServiceResponse implements ServiceResponse {
+
 	private ResponseCode serviceResponse;
-	private List<Statement> statements;
+	private List<Transaction> transactions;
+
+	@Override
 	public ResponseCode getServiceResponse() {
 		return serviceResponse;
 	}
+
 	public void setServiceResponse(ResponseCode serviceResponse) {
 		this.serviceResponse = serviceResponse;
 	}
-	public List<Statement> getStatements() {
-		return statements;
+
+	public List<Transaction> getTransactions() {
+		return transactions;
 	}
-	public void setStatements(List<Statement> statements) {
-		this.statements = statements;
+
+	public void setTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
 	}
-	
+
 }

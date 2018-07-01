@@ -13,6 +13,4 @@ public class StatementParserException extends Exception {
 		super(excption);
 	}
 
-	
-
 }

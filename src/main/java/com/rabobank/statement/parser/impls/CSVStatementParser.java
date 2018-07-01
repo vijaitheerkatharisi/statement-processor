@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.rabobank.statement.parser.StatementParser;
 import com.rabobank.statement.parser.exception.StatementParserException;
-import com.rabobank.statement.parser.objects.Statement;
+import com.rabobank.statement.parser.objects.Transaction;
 
 /**
  * 
@@ -42,10 +42,10 @@ public class CSVStatementParser implements StatementParser {
 	 */
 	@SuppressWarnings("resource")
 	@Override
-	public List<Statement> parse(File file) throws StatementParserException {
+	public List<Transaction> parse(File file) throws StatementParserException {
 
 		CSVFormat csvFileFormat = CSVFormat.DEFAULT.withHeader(FILE_HEADER_MAPPING);
-		List<Statement> statements;
+		List<Transaction> transactions;
 
 		FileReader fileReader = null;
 
@@ -58,8 +58,8 @@ public class CSVStatementParser implements StatementParser {
 
 			LOG.info("collecting statement records from csv file");
 
-			statements = csvRecords.stream().skip(1)
-					.map(record -> new Statement(Long.parseLong(record.get(REFERAANCE_NO)), record.get(ACCOUNT_NUMBER),
+			transactions = csvRecords.stream().skip(1)
+					.map(record -> new Transaction(Long.parseLong(record.get(REFERAANCE_NO)), record.get(ACCOUNT_NUMBER),
 							record.get(DESCR), Double.parseDouble(record.get(START_BALANCE)),
 							Double.parseDouble(record.get(MUTATION)), Double.parseDouble(record.get(END_BALANCE))))
 					.collect(Collectors.toList());
@@ -80,7 +80,7 @@ public class CSVStatementParser implements StatementParser {
 			}
 		}
 
-		return statements;
+		return transactions;
 	}
 
 }
